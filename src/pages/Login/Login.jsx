@@ -1,15 +1,27 @@
 
 
 import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { loginThunk } from '../../redux/auth/operations'
+import { selectLoggedIn } from '../../redux/auth/selectors'
+import { Navigate } from 'react-router-dom'
 
  const Login = () => {
+	 const dispatch = useDispatch()
+	 const isLoggedIn = useSelector(selectLoggedIn)
 
 	const { register, reset, handleSubmit } = useForm()
 	const submit = data => {
 		console.log(data)
 
-	}
+		dispatch(loginThunk(data))
+
+	 }
+	 
+	 if (isLoggedIn) {
+		 return <Navigate to='/'/>
+	 }
 	return (
 		<div className='bg-slate-800 min-h-screen grid place-items-center'>
 			<form onSubmit={handleSubmit(submit)} className='flex flex-col gap-4 bg-white px-10 py-14 rounded-md shadow-xl'>

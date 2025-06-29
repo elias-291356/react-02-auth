@@ -1,18 +1,51 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
+
+import { registerThunk, loginThunk } from "../auth/operations";
 
 const initialState = {
-    user: {
-        name: '',
-        email:''
-    },
-    token: '',
-    isLoggedIn: false,
+    user: {},
+    token: "",
+    isLogin: false,
+    loading: false,
+    error: null,
+
+  
 }
 
-const slice = createSlice({
-    name: 'auth',
-    initialState
+const authSlice = createSlice({
+    name: "auth",
+    initialState,
+    extraReducers: builder => {
+        builder.addCase(registerThunk.pending, state => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(registerThunk.fulfilled, (state, {payload}) => {
+            state.loading = false;
+            state.user = payload.user;
+            state.token = payload.token;
+            state.isLogin = true;
+        })
+        .addCase(registerThunk.rejected, (state, {payload}) => {
+            state.loading = false;
+            state.error = payload;
+        })
+        .addCase(loginThunk.pending, state => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(loginThunk.fulfilled, (state, {payload}) => {
+            state.loading = false;
+            state.user = payload.user;
+            state.token = payload.token;
+            state.isLogin = true;
+        })
+        .addCase(loginThunk.rejected, (state, {payload}) => {
+            state.loading = false;
+            state.error = payload;
+        })
+        
+    }
 })
 
-export const authReducer = slice.reducer
-
+export default authSlice.reducer;
