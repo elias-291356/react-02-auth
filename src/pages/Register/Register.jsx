@@ -1,13 +1,16 @@
 
 
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { registerThunk } from '../../redux/auth/operations'
 
  const Register = () => {
-
+	const dispatch = useDispatch()
 	const { register, reset, handleSubmit } = useForm()
 	const submit = data => {
 		console.log(data)
+		dispatch(registerThunk(data))
 
 	}
 	return (
@@ -25,10 +28,11 @@ import { Link } from 'react-router-dom'
 				/>
 				<input
 					className='border-2 border-black rounded-md px-2 py-2 text-lg'
-					placeholder='Enter the password'
+					placeholder='Enter  password'
 					type='password'
 					{...register('password', { required: true, minLength: 6 })}
 				/>
+		
 
 				<button className='border-2 border-black  px-2 py-3 rounded-md hover:bg-teal-500 hover:text-white transition cursor-pointer'>
 					Register
@@ -39,7 +43,7 @@ import { Link } from 'react-router-dom'
 						Lets login!
 					</Link>
 				</span>
-			</form>
+			</form>		
 		</div>
 	)
 }
