@@ -5,14 +5,14 @@ export const instance = axios.create({
     baseURL: 'http://localhost:3003/api/',
     
 })
-const setToken = token => {
+export const setToken = token => {
     if (token) {
         return instance.defaults.headers.authorization = `Bearer ${token}`;
     }
     instance.defaults.headers.authorization = "";
 }
 
-const clearToken = () => {
+export const clearToken = () => {
     instance.defaults.headers.authorization = "";
 }
 
@@ -45,5 +45,15 @@ export const getCurrent = async (token) => {
         throw error;
     }
 }
+
+export const refreshUser = async (token) => {
+    if (!token) {
+        throw new Error("Token is not exist");
+    }
+    setToken(token);
+    const { data } = await instance.get("/users/me");
+    return data;
+};
+
 
 export default instance;

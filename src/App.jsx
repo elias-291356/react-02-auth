@@ -4,9 +4,20 @@ import Login from "./pages/Login/Login"
 import Register from "./pages/Register/Register"
 import NotFound from "./pages/NotFound/NotFound"
 import Layout from "./components/Layout/Layout"
+import { useDispatch } from "react-redux"
+import { useEffect } from "react"
+import { refreshThunk } from "./redux/auth/operations"
 
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(refreshThunk())
+  },[dispatch])
+
+
 
 
   return (
