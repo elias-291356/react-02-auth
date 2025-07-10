@@ -63,3 +63,20 @@ export const currentThunk = createAsyncThunk(
         }
     }
 )
+
+
+
+export const refreshThunk = createAsyncThunk('refresh', async (_, thunkApi) => {
+	const savedToken = thunkApi.getState().auth.token;
+	if (!savedToken) {
+		return thunkApi.rejectWithValue('Token is not exist');
+	}
+	try {
+		const data = await api.getCurrent(savedToken);
+		return data;
+	} catch (error) {
+		return thunkApi.rejectWithValue(error.message);
+	}
+});
+
+
