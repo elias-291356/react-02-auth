@@ -1,51 +1,65 @@
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { registerThunk } from '../../redux/auth/operations'
+import { registerThunk } from "../../redux/auth/operations";
+import {
+  schemaRegister,
+  inputRegisterData,
+} from "../../components/helpers/schemas";
+import { CustomError } from "../../components/customs/CustomError";
 
- const Register = () => {
-	const dispatch = useDispatch()
-	const { register, reset, handleSubmit } = useForm()
-	const submit = data => {
-		console.log(data)
-		dispatch(registerThunk(data))
+import { Fragment } from "react";
+import { Input } from "../../components/customs/Input";
 
-	}
-	return (
-		<div className='bg-slate-800 min-h-screen grid place-items-center'>
-			<form onSubmit={handleSubmit(submit)} className='flex flex-col gap-4 bg-white px-10 py-14 rounded-md shadow-xl'>
-				<input
-					className='border-2 border-black rounded-md px-2 py-2 text-lg'
-					placeholder='Enter the name'
-					{...register('name', { required: true, minLength: 3 })}
-				/>
-				<input
-					className='border-2 border-black rounded-md px-2 py-2 text-lg'
-					placeholder='Enter the email'
-					{...register('email', { required: true, minLength: 6 })}
-				/>
-				<input
-					className='border-2 border-black rounded-md px-2 py-2 text-lg'
-					placeholder='Enter  password'
-					type='password'
-					{...register('password', { required: true, minLength: 6 })}
-				/>
-		
+const Register = () => {
+  const dispatch = useDispatch();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schemaRegister),
+  });
+  const submit = ({ confirmPassword, ...data }) => {
+    console.log(data);
+    dispatch(registerThunk(data));
+  };
+  return (
+    <div className="bg-slate-800 min-h-screen grid place-items-center">
+      <form
+        onSubmit={handleSubmit(submit)}
+        className="flex flex-col gap-4 bg-white px-10 py-14 rounded-md shadow-xl"
+      >
+        {inputRegisterData.map((item) => (
+          <Fragment key={item.name}>
+            <Input
+              type={item.type}
+              placeholder={item.placeholder}
+              name={item.name}
+              register={register}
+              error={errors[item.name]}
+            />
+            <CustomError name={item.name} errors={errors} />
+          </Fragment>
+        ))}
 
-				<button className='border-2 border-black  px-2 py-3 rounded-md hover:bg-teal-500 hover:text-white transition cursor-pointer'>
-					Register
-				</button>
-				<span>
-					You already have account?{' '}
-					<Link className='underline text-teal-600' to='/login'>
-						Lets login!
-					</Link>
-				</span>
-			</form>		
-		</div>
-	)
-}
+        <button className="border-2 border-black  px-2 py-3 rounded-md hover:bg-teal-500 hover:text-white transition cursor-pointer">
+          Register
+        </button>
+
+        <span>
+          You already have account?
+          <Link className="underline text-teal-600" to="/login">
+            Lets login!
+          </Link>
+        </span>
+      </form>
+    </div>
+  );
+};
 
 export default Register;
