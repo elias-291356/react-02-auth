@@ -33,9 +33,6 @@ export const logoutThunk = createAsyncThunk(
   "auth/signout",
   async (_, { rejectWithValue }) => {
     try {
-      const token = selectToken(getState());
-
-      setToken(token);
       const result = await api.logout();
       return result;
     } catch ({ response }) {

@@ -1,11 +1,11 @@
 import axios from "axios";
 
-// export const instance = axios.create({
-//   baseURL: "http://localhost:3003/api/",
-// });
 export const instance = axios.create({
-  baseURL: "https://movie-back-lqyq.onrender.com/api/",
+  baseURL: "http://localhost:3003/api/",
 });
+// export const instance = axios.create({
+//   baseURL: "https://movie-back-lqyq.onrender.com/api/",
+// });
 export const setToken = (token) => {
   if (token) {
     return (instance.defaults.headers.authorization = `Bearer ${token}`);

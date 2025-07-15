@@ -62,12 +62,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutThunk.fulfilled, (state) => {
-        state.loading = false;
-        state.user = {};
-        state.token = "";
-        state.isLogin = false;
-        state.isRefresh = false;
+        return (state = { ...initialState, isRefresh: false });
       })
+
       .addCase(logoutThunk.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
