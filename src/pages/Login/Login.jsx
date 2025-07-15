@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { loginThunk } from "../../redux/auth/operations";
-import { selectLoggedIn } from "../../redux/auth/selectors";
 
 import { inputLoginData, schemaLogin } from "../../components/helpers/schemas";
 import { Fragment } from "react";
@@ -13,7 +12,6 @@ import { Input } from "../../components/customs/Input";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(selectLoggedIn);
 
   const {
     register,
@@ -52,7 +50,7 @@ const Login = () => {
           Login
         </button>
         <span>
-          You already have account?{" "}
+          You already have account?
           <Link className="underline text-teal-600" to="/register">
             Lets Create
           </Link>
