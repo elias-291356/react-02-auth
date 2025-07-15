@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import * as api from "../../shared/api/auth";
+import { useSelector } from "react-redux";
+import { selectToken } from "./selectors";
 
 export const registerThunk = createAsyncThunk(
   "auth/register",
@@ -31,6 +33,9 @@ export const logoutThunk = createAsyncThunk(
   "auth/signout",
   async (_, { rejectWithValue }) => {
     try {
+      const token = useSelector(selectToken);
+
+      setToken(token);
       const result = await api.logout();
       return result;
     } catch ({ response }) {
